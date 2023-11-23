@@ -15,3 +15,16 @@ In this project, we are creating a web app that offers users a dashboard for exp
 ## Steps followed
 
 ### 0. Installation & Setup
+
+- Poetry project
+
+```bash
+pip install poetry
+
+# `poetry init --no-interaction` to initialize a pre-existing project
+poetry new backend --name="app"
+cd backend
+poetry add flask
+# pip install python-dotenv to use .env file
+# `poetry shell` to access the environment in the terminal and `exit` to exit the environment
+```
