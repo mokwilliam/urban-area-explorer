@@ -28,3 +28,32 @@ poetry add flask
 # pip install python-dotenv to use .env file
 # `poetry shell` to access the environment in the terminal and `exit` to exit the environment
 ```
+
+### Extra: Setup of CircleCI
+
+CircleCI is a continuous integration and continuous delivery (CI/CD) platform that automates the building, testing, and deployment of projects. It is a great tool to automate the testing and deployment of the project.
+
+To setup CircleCI, we need to create a `.circleci` folder at the root of the project and add a `config.yml` file inside. The `config.yml` file contains the configuration for the CI/CD pipeline.
+
+### Extra: Setup of pytest
+
+Once the test files are written, we can run the tests.
+
+```bash
+pip install pytest
+
+# To run tests
+pytest
+```
+
+### Extra: Setup of pre-commit
+
+```bash
+pip install pre-commit
+```
+
+Once the `.pre-commit-config.yaml` completed, we need to set up the git hooks scripts.
+
+```bash
+pre-commit install
+```
