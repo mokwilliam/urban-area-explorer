@@ -22,18 +22,19 @@ In this project, we are creating a web app that offers users a dashboard for exp
 pip install poetry
 
 # `poetry init --no-interaction` to initialize a pre-existing project
-poetry new backend --name="app"
-cd backend
-poetry add flask
+poetry new . --name="app"
+poetry add flask pytest
 # pip install python-dotenv to use .env file
 # `poetry shell` to access the environment in the terminal and `exit` to exit the environment
 ```
 
 ### Extra: Setup of CircleCI
 
-CircleCI is a continuous integration and continuous delivery (CI/CD) platform that automates the building, testing, and deployment of projects. It is a great tool to automate the testing and deployment of the project.
+CircleCI is a continuous integration and continuous delivery (CI/CD) platform that automates the building, testing, and deployment of projects.
 
 To setup CircleCI, we need to create a `.circleci` folder at the root of the project and add a `config.yml` file inside. The `config.yml` file contains the configuration for the CI/CD pipeline.
+
+Therefore, each time we push a commit to the repository, CircleCI will run the pipeline. We can follow the progress of the pipeline on the [CircleCI website](https://app.circleci.com).
 
 ### Extra: Setup of pytest
 
