@@ -10,7 +10,7 @@ Help from:
 
 ## Overview
 
-In this project, we are creating a web app that offers users a dashboard for exploring urban area data and understanding regional differences.
+In this project, we are creating an app that offers users a dashboard for exploring urban area data and understanding regional differences.
 
 ## Steps followed
 
@@ -23,7 +23,7 @@ pip install poetry
 
 # `poetry init --no-interaction` to initialize a pre-existing project
 poetry new . --name="app"
-poetry add flask pytest
+poetry add pyqt6 pyqt6-tools pytest
 # pip install python-dotenv to use .env file
 # `poetry shell` to access the environment in the terminal and `exit` to exit the environment
 ```
