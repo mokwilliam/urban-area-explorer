@@ -58,3 +58,12 @@ Once the `.pre-commit-config.yaml` completed, we need to set up the git hooks sc
 ```bash
 pre-commit install
 ```
+
+### Tip: New branch & push
+
+```bash
+git checkout -b <branch_name>
+git add .
+git commit -m "message"
+git push --set-upstream origin <branch_name>
+```
