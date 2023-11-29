@@ -1,10 +1,12 @@
 import sys
 
+from custom_widgets.gui_widgets import BarWidget
 from PyQt6.QtCore import QSize, QTimer
 from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import (
     QApplication,
     QComboBox,
+    QHBoxLayout,
     QLabel,
     QMainWindow,
     QVBoxLayout,
@@ -28,7 +30,6 @@ class MainWindow(QMainWindow):
         palette = main_widget.palette()
         palette.setColor(main_widget.backgroundRole(), QColor("#EEE9E3"))
         main_widget.setPalette(palette)
-        main_widget.show()
         self.setCentralWidget(main_widget)
 
         # Informative status bar
@@ -38,17 +39,45 @@ class MainWindow(QMainWindow):
         layout = QVBoxLayout()
         main_widget.setLayout(layout)
 
+        # Scroll area
+        # self.scroll = QScrollArea()
+        # self.scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        # self.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+
         # Select city
-        cities_1 = self.city_selector()
-        cities_2 = self.city_selector()
+        self.cities = self.city_selector()
+
+        # Data for the selected city
+        # self.data = QWidget()
+        # self.dataLayout = QVBoxLayout()
 
         # Add widgets to layout
-        layout.addWidget(cities_1)
-        layout.addWidget(cities_2)
+        layout.addWidget(self.cities)
+
+        # Dictionary mapping subjects to their colors
+        self.subject_colors = {
+            "Security": "blue",
+            "Transport": "green",
+            "Healthcare": "red",
+            # Add more subjects with respective colors
+        }
+
+        # Dictionary to hold bar widgets for each subject
+        self.subject_bars = {}
+
+        # Display bars for different subjects
+        for subject in self.subject_colors.keys():
+            hbox = QHBoxLayout()
+            label = QLabel(subject)
+            hbox.addWidget(label)
+            bar_widget = BarWidget(self.subject_colors[subject], 1)
+            self.subject_bars[subject] = bar_widget
+            hbox.addWidget(bar_widget)
+            layout.addLayout(hbox)
 
         # Adjust layout
-        layout.setStretchFactor(cities_1, 1)
-        layout.setStretchFactor(cities_2, 2)
+        # layout.setStretchFactor(cities, 1)
+        # layout.setStretchFactor(cities_2, 2)
 
     def city_selector(self):
         select_city = QComboBox(self)
@@ -58,15 +87,33 @@ class MainWindow(QMainWindow):
             "Chicago",
             "Houston",
             "Paris",
-            "Barcelona",
-            "Lisboa",
-            "San Diego",
-            "Dallas",
-            "San Jose",
         ]
         cities.sort()
         select_city.addItems(cities)
+        select_city.currentIndexChanged.connect(self.update_dashboard)
+        select_city.setCurrentIndex(0)
         return select_city
+
+    def update_dashboard(self):
+        current_city_index = self.cities.currentIndex()
+        # Simulated data update for different subjects
+        # You can replace this with actual data retrieval logic for the selected city
+        city_data = {
+            "New York": {"Security": 8, "Transport": 1, "Healthcare": 7},
+            "Los Angeles": {"Security": 6, "Transport": 9, "Healthcare": 1},
+            "Chicago": {"Security": 1, "Transport": 7, "Healthcare": 6},
+            "Houston": {"Security": 4, "Transport": 5, "Healthcare": 2},
+            "Paris": {"Security": 7, "Transport": 10, "Healthcare": 4},
+        }
+        selected_city = self.cities.itemText(current_city_index)
+        city_scores = city_data.get(selected_city, {})
+
+        # Update bars based on the selected city's scores
+        for subject, score in city_scores.items():
+            bar_widget = self.subject_bars.get(subject)
+            if bar_widget:
+                bar_widget.score = score
+                bar_widget.update()
 
     def informative_status_bar(self):
         # Status bar
@@ -93,14 +140,6 @@ class MainWindow(QMainWindow):
             self.remaining_time = 300  # Reset timer to 5 minutes
         else:
             self.remaining_time -= 1
-
-        # layout = QVBoxLayout()
-
-        # layout.addWidget(Color("red"))
-
-        # widget = QWidget()
-        # widget.setLayout(layout)
-        # self.setCentralWidget(widget)
 
 
 def main():
