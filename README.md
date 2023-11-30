@@ -23,7 +23,7 @@ pip install poetry
 
 # `poetry init --no-interaction` to initialize a pre-existing project
 poetry new . --name="app"
-poetry add pyqt6 pyqt6-tools pytest
+poetry add requests pyqt6 pyqt6-tools pytest
 # pip install python-dotenv to use .env file
 # `poetry shell` to access the environment in the terminal and `exit` to exit the environment
 ```

@@ -1,6 +1,7 @@
 import sys
 
 from custom_widgets.gui_widgets import BarWidget
+from database.data import get_data, simulate_update_data
 from PyQt6.QtCore import QSize, QTimer
 from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import (
@@ -12,6 +13,26 @@ from PyQt6.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+
+SUBJECTS_COLORS = {
+    "Housing": "#f3c32c",
+    "Cost of Living": "#f3d630",
+    "Startups": "#f4eb33",
+    "Venture Capital": "#d2ed31",
+    "Travel Connectivity": "#7adc29",
+    "Commute": "#36cc24",
+    "Business Freedom": "#19ad51",
+    "Safety": "#0d6999",
+    "Healthcare": "#051fa5",
+    "Education": "#150e78",
+    "Environmental Quality": "#3d14a4",
+    "Economy": "#5c14a1",
+    "Taxation": "#88149f",
+    "Internet Access": "#b9117d",
+    "Leisure & Culture": "#d10d54",
+    "Tolerance": "#e70c26",
+    "Outdoors": "#f1351b",
+}
 
 
 class MainWindow(QMainWindow):
@@ -39,38 +60,29 @@ class MainWindow(QMainWindow):
         layout = QVBoxLayout()
         main_widget.setLayout(layout)
 
-        # Scroll area
-        # self.scroll = QScrollArea()
-        # self.scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-        # self.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        # Data
+        self.data = get_data()
+        self.data_cities = self.data["urban_areas"]
 
         # Select city
         self.cities = self.city_selector()
 
-        # Data for the selected city
-        # self.data = QWidget()
-        # self.dataLayout = QVBoxLayout()
-
         # Add widgets to layout
         layout.addWidget(self.cities)
 
-        # Dictionary mapping subjects to their colors
-        self.subject_colors = {
-            "Security": "blue",
-            "Transport": "green",
-            "Healthcare": "red",
-            # Add more subjects with respective colors
-        }
-
         # Dictionary to hold bar widgets for each subject
+        self.subject_scores = {}
         self.subject_bars = {}
 
         # Display bars for different subjects
-        for subject in self.subject_colors.keys():
+        for subject in SUBJECTS_COLORS.keys():
             hbox = QHBoxLayout()
-            label = QLabel(subject)
-            hbox.addWidget(label)
-            bar_widget = BarWidget(self.subject_colors[subject], 1)
+            hbox.addWidget(QLabel(subject))
+            score = next(iter(self.data_cities.values()))[subject]
+            text_score = QLabel(str(round(score, 2)))
+            hbox.addWidget(text_score)
+            bar_widget = BarWidget(SUBJECTS_COLORS[subject], score)
+            self.subject_scores[subject] = text_score
             self.subject_bars[subject] = bar_widget
             hbox.addWidget(bar_widget)
             layout.addLayout(hbox)
@@ -80,14 +92,13 @@ class MainWindow(QMainWindow):
         # layout.setStretchFactor(cities_2, 2)
 
     def city_selector(self):
+        """Create a combo box to select a city
+
+        Returns:
+            QComboBox: Combo box to select a city
+        """
         select_city = QComboBox(self)
-        cities = [
-            "New York",
-            "Los Angeles",
-            "Chicago",
-            "Houston",
-            "Paris",
-        ]
+        cities = list(self.data_cities.keys())
         cities.sort()
         select_city.addItems(cities)
         select_city.currentIndexChanged.connect(self.update_dashboard)
@@ -96,22 +107,16 @@ class MainWindow(QMainWindow):
 
     def update_dashboard(self):
         current_city_index = self.cities.currentIndex()
-        # Simulated data update for different subjects
-        # You can replace this with actual data retrieval logic for the selected city
-        city_data = {
-            "New York": {"Security": 8, "Transport": 1, "Healthcare": 7},
-            "Los Angeles": {"Security": 6, "Transport": 9, "Healthcare": 1},
-            "Chicago": {"Security": 1, "Transport": 7, "Healthcare": 6},
-            "Houston": {"Security": 4, "Transport": 5, "Healthcare": 2},
-            "Paris": {"Security": 7, "Transport": 10, "Healthcare": 4},
-        }
+
         selected_city = self.cities.itemText(current_city_index)
-        city_scores = city_data.get(selected_city, {})
+        city_scores = self.data_cities.get(selected_city, {})
 
         # Update bars based on the selected city's scores
         for subject, score in city_scores.items():
+            text_score = self.subject_scores.get(subject)
             bar_widget = self.subject_bars.get(subject)
             if bar_widget:
+                text_score.setText(str(round(score, 2)))
                 bar_widget.score = score
                 bar_widget.update()
 
@@ -125,7 +130,7 @@ class MainWindow(QMainWindow):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self._show_time)
         self.timer.start(1000)
-        self.remaining_time = 300  # 5 minutes
+        self.remaining_time = 10  # 10 seconds
 
         self._show_time()
 
@@ -137,7 +142,9 @@ class MainWindow(QMainWindow):
         )
 
         if self.remaining_time == 0:
-            self.remaining_time = 300  # Reset timer to 5 minutes
+            self.remaining_time = 10  # Reset timer to 10 seconds
+            self.data_cities = simulate_update_data()["urban_areas"]
+            self.update_dashboard()
         else:
             self.remaining_time -= 1
 
