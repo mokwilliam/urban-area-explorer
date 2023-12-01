@@ -1,7 +1,5 @@
-import sys
-
-from custom_widgets.gui_widgets import BarWidget
-from database.data import get_data, simulate_update_data
+from app.custom_widgets.gui_widgets import BarWidget
+from app.database.data import get_data, simulate_update_data
 from PyQt6.QtCore import QSize, QTimer
 from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import (
@@ -36,11 +34,14 @@ SUBJECTS_COLORS = {
 
 
 class MainWindow(QMainWindow):
+    """Main window of the application"""
+
     def __init__(self):
         super().__init__()
-        self.initUI()
+        self.init_ui()
 
-    def initUI(self):
+    def init_ui(self) -> None:
+        """Initialize the UI"""
         # Set main window's properties
         self.setWindowTitle("Urban Area Explorer")
         self.setFixedSize(QSize(1280, 720))
@@ -91,21 +92,22 @@ class MainWindow(QMainWindow):
         # layout.setStretchFactor(cities, 1)
         # layout.setStretchFactor(cities_2, 2)
 
-    def city_selector(self):
+    def city_selector(self) -> QComboBox:
         """Create a combo box to select a city
 
         Returns:
             QComboBox: Combo box to select a city
         """
         select_city = QComboBox(self)
-        cities = list(self.data_cities.keys())
+        cities: list = list(self.data_cities.keys())
         cities.sort()
         select_city.addItems(cities)
         select_city.currentIndexChanged.connect(self.update_dashboard)
         select_city.setCurrentIndex(0)
         return select_city
 
-    def update_dashboard(self):
+    def update_dashboard(self) -> None:
+        """Update dashboard based on the selected city"""
         current_city_index = self.cities.currentIndex()
 
         selected_city = self.cities.itemText(current_city_index)
@@ -120,7 +122,8 @@ class MainWindow(QMainWindow):
                 bar_widget.score = score
                 bar_widget.update()
 
-    def informative_status_bar(self):
+    def informative_status_bar(self) -> None:
+        """Create an informative status bar"""
         # Status bar
         self.status_bar_text = QLabel(self)
         self.status_bar = self.statusBar()
@@ -134,9 +137,10 @@ class MainWindow(QMainWindow):
 
         self._show_time()
 
-    def _show_time(self):
-        minutes = self.remaining_time // 60
-        seconds = self.remaining_time % 60
+    def _show_time(self) -> None:
+        """Show remaining time in the status bar"""
+        minutes: int = self.remaining_time // 60
+        seconds: int = self.remaining_time % 60
         self.status_bar_text.setText(
             f"Data will be updated in {minutes:02}:{seconds:02}"
         )
@@ -150,7 +154,8 @@ class MainWindow(QMainWindow):
 
 
 def main():
-    app = QApplication(sys.argv)
+    """Main function"""
+    app = QApplication([])
 
     window = MainWindow()
     window.show()

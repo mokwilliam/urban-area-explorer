@@ -5,7 +5,7 @@ This small Data Engineering project focuses on aggregating, analyzing, and visua
 Help from:
 
 - [Poetry](https://python-poetry.org)
-- [Flask](https://github.com/pallets/flask/)
+- [PyQt6](https://www.pythonguis.com/pyqt6-tutorial/)
 - [CircleCI](https://circleci.com/docs/)
 
 ## Overview
@@ -23,9 +23,16 @@ pip install poetry
 
 # `poetry init --no-interaction` to initialize a pre-existing project
 poetry new . --name="app"
-poetry add requests pyqt6 pyqt6-tools pytest
+poetry add requests pyqt6 pytest pytest-qt
 # pip install python-dotenv to use .env file
 # `poetry shell` to access the environment in the terminal and `exit` to exit the environment
+```
+
+### 1. Run the app
+
+```bash
+# In the root folder (urban-area-explorer)
+poetry run python -m app.main
 ```
 
 ### Extra: Setup of CircleCI
@@ -43,8 +50,8 @@ Once the test files are written, we can run the tests.
 ```bash
 pip install pytest
 
-# To run tests
-pytest
+# To run tests, with --verbose flag to display more details
+pytest -v
 ```
 
 ### Extra: Setup of pre-commit
