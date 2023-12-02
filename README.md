@@ -5,7 +5,7 @@ This small Data Engineering project focuses on aggregating, analyzing, and visua
 Help from:
 
 - [Poetry](https://python-poetry.org)
-- [PyQt6](https://www.pythonguis.com/pyqt6-tutorial/)
+- [PyQt5](https://www.pythonguis.com/pyqt5-tutorial/)
 - [CircleCI](https://circleci.com/docs/)
 
 ## Overview
@@ -19,11 +19,11 @@ In this project, we are creating an app that offers users a dashboard for explor
 - Poetry project
 
 ```bash
-pip install poetry
+pip install poetry # version 1.6.1
 
 # `poetry init --no-interaction` to initialize a pre-existing project
 poetry new . --name="app"
-poetry add requests pyqt6 pytest pytest-qt
+poetry add requests pytest pytest-qt pyqt5==5.15.4 pyqt5-qt5==5.15.2
 # pip install python-dotenv to use .env file
 # `poetry shell` to access the environment in the terminal and `exit` to exit the environment
 ```
@@ -34,6 +34,10 @@ poetry add requests pyqt6 pytest pytest-qt
 # In the root folder (urban-area-explorer)
 poetry run python -m app.main
 ```
+
+### Interesting points / Issues I encountered
+
+- Add multiple troubleshooting points with pyqt6 (DLL load failed, undefined symbol with Qt private API, etc.). I had to downgrade to pyqt5 to make it work (both on Windows and Linux).
 
 ### Extra: Setup of CircleCI
 

@@ -1,8 +1,8 @@
 import pytest
 from app.custom_widgets.gui_widgets import BarWidget, Color
-from PyQt6.QtCore import QRectF
-from PyQt6.QtGui import QColor, QPainter, QPalette
-from PyQt6.QtWidgets import QApplication
+from PyQt5.QtCore import QRectF
+from PyQt5.QtGui import QColor, QPainter, QPalette
+from PyQt5.QtWidgets import QApplication
 
 
 @pytest.fixture

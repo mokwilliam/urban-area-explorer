@@ -1,8 +1,8 @@
 from app.custom_widgets.gui_widgets import BarWidget
 from app.database.data import get_data, simulate_update_data
-from PyQt6.QtCore import QSize, QTimer
-from PyQt6.QtGui import QColor
-from PyQt6.QtWidgets import (
+from PyQt5.QtCore import QSize, QTimer
+from PyQt5.QtGui import QColor
+from PyQt5.QtWidgets import (
     QApplication,
     QComboBox,
     QHBoxLayout,

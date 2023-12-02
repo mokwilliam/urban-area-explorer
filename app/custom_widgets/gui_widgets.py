@@ -1,6 +1,6 @@
-from PyQt6.QtCore import QRectF, Qt
-from PyQt6.QtGui import QColor, QPainter, QPainterPath, QPalette
-from PyQt6.QtWidgets import QWidget
+from PyQt5.QtCore import QRectF, Qt
+from PyQt5.QtGui import QColor, QPainter, QPainterPath, QPalette
+from PyQt5.QtWidgets import QWidget
 
 
 class Color(QWidget):
